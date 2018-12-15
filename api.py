@@ -7,6 +7,10 @@ notes = Notes()
 api = Flask(__name__)
 
 
+def not_found_error():
+    return "This task ID was not found.", 404
+
+
 @api.route("/", methods=["GET"])
 def get_all_notes():
     return jsonify(notes.get_all())
@@ -16,6 +20,8 @@ def get_all_notes():
 def get_note(note_id: int):
     if notes.valid_id(note_id):
         return jsonify(notes.get(note_id))
+    else:
+        return not_found_error()
 
 
 @api.route("/<int:note_id>", methods=["DELETE"])
@@ -23,6 +29,8 @@ def delete_note(note_id: int):
     if notes.valid_id(note_id):
         notes.delete(note_id)
         return jsonify(success=True)
+    else:
+        return not_found_error()
 
 
 @api.route("/", methods=["POST"])
@@ -38,6 +46,8 @@ def update_note(note_id: int):
         data = request.json
         notes.update(note_id, data)
         return jsonify(success=True)
+    else:
+        return not_found_error()
 
 
 @api.route("/archive/<int:note_id>", methods=["PUT"])
@@ -45,7 +55,8 @@ def archive_note(note_id: int):
     if notes.valid_id(note_id):
         notes.archive(note_id)
         return jsonify(success=True)
-    
+    else:
+        return not_found_error()
 
 
 api.run()
