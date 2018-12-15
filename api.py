@@ -19,12 +19,16 @@ def get_note(note_id: int):
 
 @api.route("/<int:note_id>", methods=["DELETE"])
 def delete_note(note_id: int):
-    pass
+    if 0 <= note_id < len(notes):
+        notes.pop(note_id)
+        return jsonify(success=True)
 
 
 @api.route("/", methods=["POST"])
 def save_note():
-    pass
+    data = request.json
+    notes.append(data)
+    return jsonify(success=True)
 
 
 @api.route("/<int:note_id>", methods=["PUT"])
