@@ -19,7 +19,7 @@ python3 api.py
 
 ## Technical details
 
-API is written using the Flask library, because its minimal nature fits the task. On the other hand, this API might not scale too well because of python's nature to be slow.
+API is written using the Flask library, because its minimal nature fits the task. On the other hand, this API might not scale too well because of python's nature to be slow. Both python and flask are very popular programming tools, which means the tool is stable and any common problems have been documented online. 
 
 ## API overview
 
@@ -31,14 +31,14 @@ API is written using the Flask library, because its minimal nature fits the task
 
 ## Conundrums
 
-I really wanted to join the `update_note` and `archive_note` into the same endpoint. This was difficult because they both update notes, which means we have to use the "PUT" HTTP method. One solution I thought of initially was to pass keyword parameters "archive" and "edit" along with the request, but I ended up splitting those two methods in the end.
+I really wanted to join the `update_note` and `archive_note` into the same endpoint. I wanted to do that because technically they both update the state of a note. One solution I thought of initially was to pass keyword parameters "archive" and "edit" along with the request, but I ended up splitting those two methods in the end.
 
-Additionally, it may make sense to split the endpoint part of the `api.py` file into a separate file, but since the file isn't too big, this isn't much of a problem.
+Additionally, it may make sense to split the `api.py` file into two files - one that handles the app initialisation and another that has endpoint functions, but since the file isn't too big (and the app initialisation part is not too pronounced), this isn't much of a problem.
 
 ## Improvements
 
 Useful technology
-- Database (instead of storing all data in the `Notes` class)
+- Database (instead of storing data in the `Notes` class, which is bad because the data is lost with server restarts)
 - Docker (for easier deployment and separation of dependancies)
 
 Additional features
@@ -47,4 +47,4 @@ Additional features
 
 Potential problems
 - Sequential note IDs (may be bad because without restricting access to notes someone can scrape all notes just by increasing the note ID in the request)
-- Security holes???
+- Security holes (users submit text, therefore we have to think about how we store and display it. Stuff like SQL injections and cross-site scripting attacks) 
